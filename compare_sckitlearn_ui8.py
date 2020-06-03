@@ -1,59 +1,39 @@
 # -*- coding: utf-8 -*-
 """
-Created on Sun Jul 28 22:14:43 2019
-
-@author: umit
+@author: umit isikdag -2020
 """
-#https://machinelearningmastery.com/compare-machine-learning-algorithms-python-scikit-learn/
-# Compare Algorithms
+
 import pandas
 import matplotlib.pyplot as plt
-from sklearn import model_selection
-from sklearn.linear_model import LogisticRegression
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.neighbors import KNeighborsClassifier
-from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from sklearn.naive_bayes import GaussianNB
-from sklearn.svm import SVC, LinearSVC, NuSVC
+from sklearn.svm import SVC
 from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier, GradientBoostingClassifier
-from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis
 from sklearn.model_selection import KFold,StratifiedKFold
 from sklearn.model_selection import cross_val_score, cross_val_predict
 from sklearn.metrics import confusion_matrix,classification_report
-from sklearn.feature_selection import SelectFromModel
-from sklearn.ensemble import ExtraTreesClassifier
 import numpy as np
 import seaborn as sn
 
-
-#Silence all warnings
 import warnings
 warnings.filterwarnings("ignore")
 
-
-# load dataset
-# prepare configuration for cross validation test harness
 seed = 1
-#
 from sklearn.preprocessing import LabelEncoder
 dataset = pandas.read_csv('data_experiment_2_Weka.csv')
 X = dataset.iloc[:, 0:5].values
 Y = dataset.iloc[:, 5].values
-# encode class values as integers
+
 encoder = LabelEncoder()
 encoder.fit(Y)
 encoded_Y = encoder.transform(Y)
 
-#prepare models
 models = []
-models.append(('LR', LogisticRegression()))
-models.append(('LDA', LinearDiscriminantAnalysis()))
-models.append(('QDA',QuadraticDiscriminantAnalysis()))
 models.append(('KNN', KNeighborsClassifier(4)))
 models.append(('CART', DecisionTreeClassifier()))
 models.append(('NB', GaussianNB()))
 models.append(('SVM', SVC(kernel="rbf", C=0.025, probability=True,gamma='scale')))
-models.append(('nuSVC',NuSVC(probability=True,gamma='scale')))
 models.append(('RF',RandomForestClassifier(n_estimators=100)))
 models.append(('AB',AdaBoostClassifier(DecisionTreeClassifier(max_depth=3),n_estimators=500,learning_rate=1)));
 models.append(('GB',GradientBoostingClassifier()))
@@ -70,12 +50,7 @@ for name, model in models:
     conf_mat = confusion_matrix(encoded_Y, y_pred)
     results.append(cv_results)
     names.append(name)
-    #msg = "%s: %s %f (%f) %s %f (%f)" % (name,'Kfold' ,cv_results.mean(), cv_results.std(),
-    #                  'S-Kfold',cv_results2.mean(), cv_results2.std())
-    #print('-------------------')
-    #print(msg)
-    #print('---------K-fold CM-------')
-    #print(conf_mat)
+
     print('-------------Classification Report--------------')
     print(classification_report(encoded_Y, y_pred, digits=3))
     #Prepare Confusion Matrices
