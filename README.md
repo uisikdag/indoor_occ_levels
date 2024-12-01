@@ -1,4 +1,4 @@
-# indoor_occ_levels
+# Estimation of Indoor Occupancy Status and Levels
 
 Please refer to:
 Journal of Environmental Protection and Ecology 21, No 4, 1336–1341 (2020)
